@@ -16,9 +16,14 @@ $conn = require 'includes/db.php';
 
 
 <!-- TODO Index à l'acceuil sans connexion USER / ADMIN -->
+<!-- lien vers la page de connexion -->
+<a href="login.php">Se connecter</a>
 
 
 
+<h1>Page d'acceuil</h1>
 
- <!-- REQUIRE DU FOOTER -->
-  <?php require 'includes/footer.php' ?>
+
+
+<!-- REQUIRE DU FOOTER -->
+<?php require 'includes/footer.php' ?>
