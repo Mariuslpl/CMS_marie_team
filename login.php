@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 
-
+ 
 <!-- REQUIRE DU HEADER -->
 <?php require 'includes/header.php'; ?>
 
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <!-- champ du mot de passe -->
         <label for="password"><b>Mot de passe</b></label>
-        <input id="password" type="text" placeholder="Entrer le mot de passe" name="password">
+        <input id="password" type="password" placeholder="Entrer le mot de passe" name="password">
 
         <input id="submit" type="submit" value="Se Connecter">
 
