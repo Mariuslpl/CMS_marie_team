@@ -3,6 +3,24 @@
 //inclus du fichier d'initialisation du spl auto loader pour les accéder aux fichiers de classes
 require 'includes/init.php';
 
+//
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+    //on initie un objet DATABASE
+    $conn = require 'includes/db.php';
+
+    //test si l'authentification est ADMIN
+    if (User::authentifieAdmin($conn, $_POST['username'], $_POST['password'])) {
+        
+        // vérifiaction de la connexion
+        Auth::loginAdmin();
+        //on redirige vers l'index ADMIN
+        Url::redirect('/admin/index.php');
+
+    } else {
+        $error = "Identifiants incorrects";
+    }
+}
 ?>
 
 
@@ -14,6 +32,8 @@ require 'includes/init.php';
 
 <!-- lien de retour vers la page d'acceuil -->
 <a href="index.php">Acceuil</a>
+
+
 
 <h1>Page de connexion</h1>
 
@@ -36,7 +56,7 @@ require 'includes/init.php';
         <input id="submit" type="submit" value="Se Connecter">
 
         <!-- lien vers la page d'inscription -->
-        <a href="inscription.php">Pas encore inscrit?</a>
+        <a href="inscription.php">Pas encore inscrit ?</a>
     </form>
 </div>
 

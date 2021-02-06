@@ -17,7 +17,7 @@ $conn = require 'includes/db.php';
 
 <!-- TODO Index à l'acceuil sans connexion USER / ADMIN -->
 <!-- lien vers la page de connexion -->
-<a href="login.php">Se connecter</a>
+<a href='login.php'>Se connecter</a>
 
 
 
