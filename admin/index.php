@@ -23,7 +23,8 @@ require '../includes/init.php';
         <button id="get_all_port" type="button" name="button">Ports</button>
         <button id="get_all_secteur" type="button" name="button">Secteurs</button>
 
-        <button id="get_liaison" type="button" name="button">Liaisons</button>
+        <button id="get_all_liaison" type="button" name="button">Liaisons</button>
+        
         <button id="get_traversee" type="button" name="button">Traversées</button>
         <button id="get_bateau" type="button" name="button">Bateaux</button>
         <button id="get_categorie" type="button" name="button">Catégories</button>
@@ -34,6 +35,10 @@ require '../includes/init.php';
         <button id="get_enregistre" type="button" name="button">Enregistrements</button>
         <button id="get_tarif" type="button" name="button">Tarifs</button>
     </div>
+
+
+
+
 
     <!-- Tableau de données => rechargement à chaque click button -->
     <div class="container">
@@ -121,6 +126,53 @@ require '../includes/init.php';
         </div>
     </div>
 
+    <!-- ************************************************ La MODALE LIAISON -->
+    <div class="modal fade" id="modale_liaison">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <form id="modale_liaison_contenu" method="post">
+                    <!-- MODAL HEADER -->
+                    <div class="modal-header">
+                        <h4 class="modal-title"></h4>
+                        <button type="button" class="close" data-dismiss="modal">X</button>
+                    </div>
+
+                    <!-- MODAL BODY -->
+                    <div class="modal-body">
+                        <div style="width: 90%;">    
+                            <label>Enter le code de la liaison :</label>
+                            <input id="code_liaison" type="text" name="code_liaison">
+                        </div>
+
+                        <div style="width: 90%;">  
+                            <label>Distance de la liaison :</label>
+                            <input id="distance" type="text" name="distance">
+                        </div>
+
+                        <!-- new drop down test -->
+                        <div id="drop_add_liaison" style="width: 90%;">
+                        
+                        </div>
+                    </div>
+
+                    <!-- MODAL FOOTER -->
+                    <div class="modal-footer">
+                        <button id="btn_add_liaison" type="submit" class="btn btn-primary" data-dismiss="modal">Ajouter</button>
+                        <button id="btn_update_liaison" type="submit" class="btn btn-primary" data-dismiss="modal">Modifier</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                    </div>
+
+                    <!-- REQUETE ENVOYEE -->
+                    <input id="request_php_liaison" type="hidden" name="action_php">
+
+                    <!-- HIDDEN ID -->
+                    <input id="hidden_id_liaison" type="hidden" name="hidden_id_liaison">                    
+                </form>
+
+            </div>
+        </div>
+    </div>
 
     <!-- Modale message BDD // confirmation suppression PORT-->
     <div class="modal fade" id="message_bdd_port">
@@ -150,6 +202,19 @@ require '../includes/init.php';
         </div>
     </div>
 
+    <!-- Modale message BDD // confirmation suppression LIAISON-->
+    <div class="modal fade" id="message_bdd_liaison">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" id="message_modale_liaison">
+                </div>
+                <div class="modal-footer" id="btn_conf_liaison">
+                    <button id="btn_delete_liaison" type="submit" class="btn btn-danger" data-dismiss="modal">Supprimer</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 <!-- REQUIRE DU FOOTER -->
