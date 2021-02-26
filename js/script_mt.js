@@ -397,19 +397,9 @@ $(document).on('click', '#btn_add_liaison', function() {
 // clique boutton class=edit_liaison
 $(document).on('click', '.edit_liaison', function() {
 
-
-    var action = 'drop_add_liaison';
-    $.ajax({
-        url:'php_request/main_request.php',
-        method:'POST',
-        data:{action_php: action},
-        success:function(data) {
-            $('#drop_add_liaison').html(data);
-        }
-    });
-
-    //récupére la valeur de la prop id du boutton Modifier
+    //récupére la valeur de la prop id (code_liaison) du boutton Modifier // Et distance 
     var id = $(this).attr('id');
+    var distance = $(this).attr('distance');
     var action = 'get_one_liaison';
     console.log(id);
 
@@ -417,7 +407,6 @@ $(document).on('click', '.edit_liaison', function() {
         url:'php_request/main_request.php',
         method:'POST',
         data:{id:id, action_php:action},
-        dataType:'json',
         //callback qui permet d'alimenter le champ
         success:function(data) {
             //remise à blanc du formulaire
@@ -425,11 +414,9 @@ $(document).on('click', '.edit_liaison', function() {
 
             $('.modal-title').html('Modifier une liaison');
             //passage de la valeur dans l'input
-            $('#code_liaison').val(data.code_liaison);
-            $('#distance').val(data.distance);
-            $('#select_port_dep').val(data.port_dep);
-           /*  $('#drop_port_arrivee').val(data.port_arr);
-            $('#drop_secteur_concerne').val(data.secteur); */
+            $('#drop_add_liaison').html(data);
+            $('#code_liaison').val(id);
+            $('#distance').val(distance);
 
             //passe l'action php // input id=request_php_liaison
             $('#request_php_liaison').val("update_liaison");
@@ -441,5 +428,52 @@ $(document).on('click', '.edit_liaison', function() {
             $('#hidden_id_liaison').val(id);
             $('#modale_liaison').modal();
         }
+    });
+});
+
+// validation du formulaire // button id=btn_update_liaison
+$(document).on('click', '#btn_update_liaison', function() {
+    //!!! reprend tout les tag avec une propriété name et associe la valeur !!!!
+    var form_data = $('#modale_liaison_contenu').serialize();
+    console.log(form_data);
+
+    $.ajax({
+        url:'php_request/main_request.php',
+        method:'POST',
+        data: form_data,
+        //callback après requetage du fichier php
+        success:function(data) {
+            $('#message_modale_liaison').html(data);
+            //boutton de confirmation de suppression ==> hidden
+            $('#btn_conf_liaison').attr('hidden', true);
+            $('#message_bdd_liaison').modal();
+            get_all_liaison();
+        }
+    });
+});
+
+
+//******************************** DELETE LIAISON
+// clique boutton class=delete_liaison
+$(document).on('click', '.delete_liaison', function() {
+    //récupére la valeur de la prop id du boutton Supprimer
+    var id = $(this).attr('id');
+    var message = "<p>Confirmez la suppression de cette LIAISON ?</p>"
+
+    $('#message_modale_liaison').html(message);
+    //boutton de confirmation de suppression ==> visible 
+    $('#btn_conf_liaison').attr('hidden', false);
+    $('#message_bdd_liaison').modal();
+
+    $('#btn_delete_liaison').click(function() {
+        var action = 'delete_liaison';
+        $.ajax({
+            url:'php_request/main_request.php',
+            method:'POST',
+            data:{id: id, action_php: action},
+            success:function() {
+                get_all_liaison();
+            }
+        });
     });
 });

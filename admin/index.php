@@ -154,6 +154,7 @@ require '../includes/init.php';
                         <div id="drop_add_liaison" style="width: 90%;">
                         
                         </div>
+
                     </div>
 
                     <!-- MODAL FOOTER -->

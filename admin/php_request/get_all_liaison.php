@@ -63,6 +63,7 @@ if ($tot_liaisons > 0) {
             
             <td>
                 <button id="' .$liaison["code_liaison"]. '"
+                        distance="' .$liaison["distance"]. '"
                         type="button"
                         name="edit"
                         class="btn btn-primary btn-xs edit_liaison"> MODIFIER

@@ -119,7 +119,7 @@ if(isset($_POST["action_php"]))
     // add modale 
     if($_POST["action_php"] == "drop_add_liaison")
     {
-        drop_down_modal($conn);
+        drop_down_modal($conn, "", "", "");
     }
     
     //********************************* ADD LIAISON
@@ -133,22 +133,11 @@ if(isset($_POST["action_php"]))
         echo '<p>La liaison a bien été ajoutée !</p>';
     }
 
-    //********************************* UPDATE LIAISON
+    //********************************* GET ONE LIAISON
     if($_POST["action_php"] == "get_one_liaison")
     {
 
-        $query = "SELECT liaison.code_liaison, liaison.distance,
-                         sectnom.nom_secteur AS 'nom_secteur_concerne',
-                         portarr.nom_port AS 'nom_port_arrivee', 
-                         portdep.nom_port AS 'nom_port_depart'
-                FROM liaison
-                INNER JOIN secteur sectnom
-                    ON liaison.id_secteur_concerne = sectnom.id_secteur
-                INNER JOIN port portarr
-                    ON liaison.id_port_arrivee = portarr.id_port
-                INNER JOIN port portdep
-                    ON liaison.id_port_depart = portdep.id_port
-                WHERE code_liaison = '".$_POST["id"]."'";    
+        $query = "SELECT * FROM liaison WHERE code_liaison ='".$_POST["id"]."'";    
 
         $stmt = $conn->prepare($query);
         $stmt->execute();
@@ -156,20 +145,41 @@ if(isset($_POST["action_php"]))
 
         foreach($result as $row)
         {
-            $output['code_liaison'] = $row['code_liaison'];
-            $output['distance'] = $row['distance'];
-            $output['port_dep'] = $row['nom_port_depart'];
-            $output['port_arr'] = $row['nom_port_arrivee'];
-            $output['secteur'] = $row['nom_secteur_concerne'];
+            $port_dep = $row['id_port_depart'];
+            $port_arr = $row['id_port_arrivee'];
+            $secteur = $row['id_secteur_concerne'];
+            drop_down_modal($conn, $port_dep, $port_arr, $secteur);
         }
-        // ici l'encodege en fichier JSON est à décoder par la page inerte
-        echo json_encode($output);
-        
     }
 
+    //********************************* UPDATE LIAISON
+    if($_POST["action_php"] == "update_liaison")
+    {
+        $query = "UPDATE liaison 
+                    SET code_liaison = '".$_POST["code_liaison"]."', 
+                        distance = '".$_POST["distance"]."', 
+                        id_port_depart = '".$_POST["drop_port_depart"]."', 
+                        id_port_arrivee = '".$_POST["drop_port_arrivee"]."', 
+                        id_secteur_concerne = '".$_POST["drop_secteur_concerne"]."' 
+                   WHERE liaison.code_liaison = '".$_POST["hidden_id_liaison"]."'"; 
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        echo '<p>La liaison à été mise à jour !</p>';
+    }
+
+    
+    //********************************* DELETE LIAISON
+    if($_POST["action_php"] == "delete_liaison")
+    {
+        $query = "DELETE FROM liaison
+                  WHERE code_liaison = '".$_POST["id"]."'";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+    }
 }
 
-function drop_down_modal($conn) {
+function drop_down_modal($conn, $id_port_dep, $id_port_arr, $id_secteur) {
 
     $sql_port_dep = "SELECT * FROM port";
     $sql_port_dep = $conn->query($sql_port_dep);
@@ -196,51 +206,63 @@ function drop_down_modal($conn) {
     }
 
     // dropdown port départ
-    $output = ' <div>        
+    $output['drop_down'] = ' <div>        
                     <label>Port de départ :</label>
                         <select onchange="logIdPortDep(value);" name="drop_port_depart" size="1">
                             <option></option> ';
     $tot_ports_dep = $sql_port_dep->rowCount();
     if ($tot_ports_dep > 0) {
         foreach ($les_ports_dep as $port_dep) {
-            $output .= '<option value="'.$port_dep["id_port"].'"> '.$port_dep["nom_port"].'</option>';
+            if($port_dep["id_port"] == $id_port_dep) {
+                $output['drop_down'] .= '<option selected value="'.$port_dep["id_port"].'"> '.$port_dep["nom_port"].'</option>';    
+            } else {
+                $output['drop_down'] .= '<option value="'.$port_dep["id_port"].'"> '.$port_dep["nom_port"].'</option>';
+            }
         }
     } else {
-        $output .= '<option>Pas de port enregistré</option>';
+        $output['drop_down'] .= '<option>Pas de port enregistré</option>';
     }
-    $output .= ' </select> </div>';
+    $output['drop_down'] .= ' </select> </div>';
 
     // dropdown port arrivée
-    $output .= ' <div>         
+    $output['drop_down'] .= ' <div>         
                     <label>Port d\'arrivée :</label>
                         <select onchange="logIdPortArr(value);" name="drop_port_arrivee" size="1">
                             <option></option>';
     $tot_ports_arr = $sql_port_arr->rowCount();
     if ($tot_ports_arr > 0) {
         foreach ($les_ports_arr as $port_arr) {
-            $output .= '<option value="'.$port_arr["id_port"].'"> '.$port_arr["nom_port"].'</option>';
+            if($port_arr['id_port'] == $id_port_arr) {
+                $output['drop_down'] .= '<option selected value="'.$port_arr["id_port"].'"> '.$port_arr["nom_port"].'</option>';    
+            } else {
+                $output['drop_down'] .= '<option value="'.$port_arr["id_port"].'"> '.$port_arr["nom_port"].'</option>';
+            }
         }
     } else {
-        $output .= '<option>Pas de port enregistré</option>';
+        $output['drop_down'] .= '<option>Pas de port enregistré</option>';
     }
-    $output .= '</select> </div>'; 
+    $output['drop_down'] .= '</select> </div>'; 
 
     // dropdown secteur
-    $output .= ' <div>         
+    $output['drop_down'] .= ' <div>         
                     <label>Secteur concerné par la liaison :</label>
                         <select onchange="logIdSectCon(value);" name="drop_secteur_concerne" size="1">
                             <option></option> ';
     $tot_secteurs = $sql_secteur->rowCount();
     if ($tot_secteurs > 0) {
         foreach ($les_secteurs as $secteur) {
-            $output .= '<option value="'.$secteur["id_secteur"].'"> '.$secteur["nom_secteur"].'</option>';
+            if($secteur['id_secteur'] == $id_secteur) {
+                $output['drop_down'] .= '<option selected value="'.$secteur["id_secteur"].'"> '.$secteur["nom_secteur"].'</option>';    
+            } else {
+                $output['drop_down'] .= '<option value="'.$secteur["id_secteur"].'"> '.$secteur["nom_secteur"].'</option>';
+            }
         }
     } else {
-        $output .= '<option>Pas de secteur enregistré</option>';
+        $output['drop_down'] .= '<option>Pas de secteur enregistré</option>';
     }
-    $output .= '</select> </div>'; 
+    $output['drop_down'] .= '</select> </div>'; 
 
-    echo $output;
+    echo $output['drop_down'];
 }
  ?>
 
