@@ -7,20 +7,17 @@ require '../../includes/init.php';
 $conn = require '../../includes/db.php';
 
 //déclaration de la requête SQL
-$sql = "
-SELECT
-liaison.code_liaison, liaison.distance,
-sectnom.nom_secteur AS 'nom_secteur_concerne',
-portarr.nom_port AS 'nom_port_arrivee', 
-portdep.nom_port AS 'nom_port_depart'
-
-FROM liaison
-INNER JOIN secteur sectnom
-ON liaison.id_secteur_concerne = sectnom.id_secteur
-INNER JOIN port portarr
-ON liaison.id_port_arrivee = portarr.id_port
-INNER JOIN port portdep
-ON liaison.id_port_depart = portdep.id_port ";
+$sql = "SELECT liaison.code_liaison, liaison.distance,
+               sectnom.nom_secteur AS 'nom_secteur_concerne',
+               portarr.nom_port AS 'nom_port_arrivee', 
+               portdep.nom_port AS 'nom_port_depart'
+        FROM liaison
+            INNER JOIN secteur sectnom
+        ON liaison.id_secteur_concerne = sectnom.id_secteur
+            INNER JOIN port portarr
+        ON liaison.id_port_arrivee = portarr.id_port
+            INNER JOIN port portdep
+        ON liaison.id_port_depart = portdep.id_port ";
 
 //puis on requête avec la méthode query() 
 $sql = $conn->query($sql);
