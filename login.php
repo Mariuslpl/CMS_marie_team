@@ -17,6 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //on redirige vers l'index ADMIN
         Url::redirect('/admin/index.php');
 
+    //test si l'authentification est UTILISATEUR
+    } else if (User::authentifie($conn, $_POST['username'], $_POST['password'])) {
+
+        Auth::login();
+        Url::redirect('/reservation.php');
+
     } else {
         $error = "Identifiants incorrects";
     }
@@ -30,13 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 
-<!-- lien de retour vers la page d'acceuil -->
-<a href="index.php">Acceuil</a>
-
-
 
 <h1>Page de connexion</h1>
-
 
 
 <!-- formulaire de connexion -->
@@ -44,6 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- utilise la méthode POST -->
     <form method="POST">
         <h1>Connexion</h1>
+
+        <?php if (!empty($error)): ?>
+            <p><?= $error ?></p>
+        <?php endif; ?>
 
         <!-- champ du nom d'utilisateur -->
         <label for="username"><b>Nom d'utilisateur</b></label>

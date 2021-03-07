@@ -6,6 +6,11 @@ require 'includes/init.php';
 //Varibale qui récupére la connexion à la DATABASE
 $conn = require 'includes/db.php';
 
+if(isset($_SESSION["id"]) && isset($_SESSION["user_name"])) {
+    $test_id = $_SESSION["id"];
+    $test_username = $_SESSION["user_name"];
+}
+
  ?>
 
 
@@ -15,15 +20,13 @@ $conn = require 'includes/db.php';
 
 
 
-<!-- TODO Index à l'acceuil sans connexion USER / ADMIN -->
-<!-- lien vers la page de connexion -->
-<a href='login.php'>Se connecter</a>
-
-
 
 <h1>Page d'acceuil</h1>
 
-
+<?php if (!empty($test_id)): ?>
+    <p>Bienvenu utilisateur n° : <?= $test_id ?></p>
+    <p>Bienvenu <?= $test_username ?></p>
+<?php endif; ?>
 
 <!-- REQUIRE DU FOOTER -->
 <?php require 'includes/footer.php' ?>

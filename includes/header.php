@@ -12,6 +12,7 @@
         <!-- font et logo -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
+        <link rel="stylesheet" href="/styles.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -21,15 +22,23 @@
     </head>
 
     <body>
-
         <div class="container">
-
-            <header>
-                <h1>Marie Team</h1>
-            </header>
-
-            <nav>
-                <!-- TODO barre de navigation avec on select sur les navigation links -->
-            </nav>
+            <div class="navbar" style="margin-bottom:50px; margin-top:20px">
+                    <?php if (Auth::estConnecteAdmin()): ?>
+                        <a href="/admin/index.php"><i class="fa fa-fw fa-unlock "></i> ADMIN</a>
+                        <a href="/index.php"><i class="fa fa-fw fa-home"></i> Acceuil</a>
+                        <a href="/reservation.php"><i class="fa fa-fw fa-ship"></i> Réservations</a>
+                        <a href="/trajet.php"><i class="fa fa-fw fa-map-marker"></i> Trajets</a>
+                        <a href="/logout.php"><i class="fa fa-fw fa-sign-out"></i> Se déconnecter.</a>
+                    <?php elseif(Auth::estConnecte()): ?>
+                        <a href="/index.php"><i class="fa fa-fw fa-home"></i> Acceuil</a>
+                        <a href="/reservation.php"><i class="fa fa-fw fa-ship"></i> Réservations</a>
+                        <a href="/trajet.php"><i class="fa fa-fw fa-map-marker"></i> Trajets</a>
+                        <a href="/logout.php"><i class="fa fa-fw fa-sign-out"></i> Se déconnecter.</a>
+                    <?php else: ?>
+                        <a href="/index.php"><i class="fa fa-fw fa-home"></i> Acceuil</a>
+                        <a href="/login.php"><i class="fa fa-fw fa-sign-in"></i> Se Connecter.</a>
+                    <?php endif; ?>
+                </div>
 
             <main>

@@ -8,6 +8,28 @@
 class Auth
 {
     /**
+     * Retourne le statut d'autehentification utilisateur
+     *
+     * @return boolean True si l'user est loggé, False sinon
+     */
+    public static function estConnecte()
+    {
+        return isset($_SESSION['est_connecte']) && $_SESSION['est_connecte'];
+    }
+
+
+    /**
+     * Retourne le statut d'autehentification ADMIN
+     *
+     * @return boolean True si l'admin est loggé, False sinon
+     */
+    public static function estConnecteAdmin()
+    {
+        return isset($_SESSION['est_connecte_admin']) && $_SESSION['est_connecte_admin'];
+    }
+
+
+    /**
      * login ADMIN en utilisant la session
      *
      * @return void
@@ -20,6 +42,16 @@ class Auth
         $_SESSION['est_connecte_admin'] = true;
     }
 
+    /**
+     * login UTILISATEUR en utilisant la session
+     *
+     * @return void
+     */
+    public static function login()
+    {
+        session_regenerate_id(true);
+        $_SESSION['est_connecte'] = true;
+    }
 
     /**
      * Logout et destruction de session
