@@ -1801,7 +1801,7 @@ $(document).on('click', '.delete_enregistre', function() {
         $.ajax({
             url:'php_request/main_request.php',
             method:'POST',
-            data:{id: id, type_enr:type_enr, action_php: action},
+            data:{id:id, type_enr:type_enr, action_php:action},
             success:function() {
                 get_all_enregistre();
             }
@@ -1809,5 +1809,132 @@ $(document).on('click', '.delete_enregistre', function() {
     });
 });
 //*************************************************************************************
-//******************************** CONTENIR fin ********************/
+//******************************** ENREGISTRE fin ********************/
+//*************************************************************************************
+
+
+
+//*************************************************************************************
+//******************************** réservation début ********************/
+//*************************************************************************************
+
+$(document).ready(function() {
+    console.log( "ready!" );
+
+    //document.getElementById("date_traversee").defaultValue = "2000-01-01";
+
+    get_btn_resa();
+
+    get_all_trajet();
+});
+
+function get_btn_resa() {
+    var action = 'get_btn_secteur';
+    $.ajax({
+        url:'admin/php_request/req_resa.php',
+        method:'POST',
+        data:{action_php:action},
+        success:function(data) {
+            $('#btn_secteur').html(data);
+        }
+    });
+};
+//clique sur un bouton secteur
+$(document).on('click', '.btn_secteur', function() {
+    var id = $(this).attr('id');
+    console.log('clique sur le secteur avec l\'id : ' + id);
+    var action = "get_resa_liaison";
+    $.ajax({
+        url:'admin/php_request/req_resa.php',
+        method:'POST',
+        data:{id:id, action_php:action},
+        success:function(data) {
+            $('#drop_resa_liaison').html(data);
+        },
+        error:function() {
+            console.log('erreur appel drop down liaison');
+        }
+    });
+});
+function logResaCodLia($id) {
+    console.log("L'id de la liaison séléctionnée est : " + $id)
+}
+//clique sur le bouton "afficher les traversées"
+$(document).on('click', '#aff_resa_traversee', function() {
+    var date = $('#date_traversee').val();
+    if(date == "2000-01-01") {
+        console.log("ERREUR DATE INCORRECTE");
+    }
+    console.log(date);
+    var code_lia = $('#test_val').val();
+    console.log(code_lia);
+    var action = 'get_resa_traversee';
+    $.ajax({
+        url:'admin/php_request/req_resa.php',
+        method:'POST',
+        data:{date:date, code:code_lia, action_php:action},
+        success:function(data) {
+            $('#table_resa').html(data);
+        }
+    });
+});
+//clique sur le bouton selectionner
+$(document).on('click', '.select_traversee', function() {
+    var id_trav = $(this).attr('id');
+    console.log(id_trav);
+
+    $('.modal-title').html('Information de réservation');
+    $('#modale_resa_contenu')[0].reset();
+    $('#request_php_resa').val("add_resa");
+
+    $('#hidden_id_resa').val(id_trav);
+    $('#btn_add_resa').attr('hidden', false);
+    $('#modale_resa').modal();
+});
+// validation de la modale de réservation utilisateur
+$(document).on('click', '#btn_add_resa', function() {
+    var form_data = $('#modale_resa_contenu').serialize();
+    console.log(form_data);
+
+    $.ajax({
+        url:'admin/php_request/req_resa.php',
+        method:'POST',
+        data: form_data,
+        success:function(data) {
+            $('#message_modale_resa').html(data);
+            $('#message_bdd_resa').modal();
+        },
+    }); 
+});
+//*************************************************************************************
+//******************************** réservation fin ********************/
+//*************************************************************************************
+
+
+
+//*************************************************************************************
+//******************************** trajet/tarifs début ********************/
+//*************************************************************************************
+function get_all_trajet() {
+    var action = 'get_all_trajet';
+    $.ajax({
+        url:'admin/php_request/trajet_tarif.php',
+        method:'POST',
+        data:{action_php:action},
+        success:function(data) {
+            $('#table_trajet').html(data);
+        },
+        error:function() {
+            console.log("erreur dans l'appel de get_all_liaison.php");
+        }
+    })
+};
+
+$(document).on('click', '.get_tarifs', function() {
+    var action = 'get_one_tarif';
+    var id_liaison = $(this).attr('id');
+    console.log(id_liaison);
+});
+//*************************************************************************************
+//******************************** trajet/tarifs fin ********************/
 //*************************************************************************************

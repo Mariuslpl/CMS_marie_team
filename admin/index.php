@@ -13,8 +13,6 @@ require '../includes/init.php';
 
 
 
-<!-- lien de déconnexion -->
-<a href="../logout.php">Se déconneter</a>
 
 <h1>Page d'admin</h1>
 
