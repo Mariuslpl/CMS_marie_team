@@ -28,12 +28,13 @@
                         <a href="/admin/index.php"><i class="fa fa-fw fa-unlock "></i> ADMIN</a>
                         <a href="/index.php"><i class="fa fa-fw fa-home"></i> Acceuil</a>
                         <a href="/reservation.php"><i class="fa fa-fw fa-ship"></i> Réservations</a>
-                        <a href="/trajet.php"><i class="fa fa-fw fa-map-marker"></i> Trajets</a>
+                        <a href="/trajet.php"><i class="fa fa-fw fa-map-marker get_les_trajets"></i> Trajets</a>
                         <a href="/logout.php"><i class="fa fa-fw fa-sign-out"></i> Se déconnecter.</a>
                     <?php elseif(Auth::estConnecte()): ?>
                         <a href="/index.php"><i class="fa fa-fw fa-home"></i> Acceuil</a>
                         <a href="/reservation.php"><i class="fa fa-fw fa-ship"></i> Réservations</a>
-                        <a href="/trajet.php"><i class="fa fa-fw fa-map-marker"></i> Trajets</a>
+                        <a href="/trajet.php"><i class="fa fa-fw fa-map-marker get_les_trajets"></i> Trajets</a>
+                        <a href="/compte.php"><i class="fa fa-fw fa-address-book get_infos_compte"></i> Mon compte</a>
                         <a href="/logout.php"><i class="fa fa-fw fa-sign-out"></i> Se déconnecter.</a>
                     <?php else: ?>
                         <a href="/index.php"><i class="fa fa-fw fa-home"></i> Acceuil</a>

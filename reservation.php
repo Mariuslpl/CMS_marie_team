@@ -16,7 +16,7 @@ $conn = require 'includes/db.php';
 
 
 
-<h1>Page de Réservations</h1>
+<h1>Effectuer une réservation</h1>
 
 <div>
     Séléctionner un secteur : 

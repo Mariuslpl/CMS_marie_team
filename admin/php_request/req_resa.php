@@ -143,12 +143,13 @@ if(isset($_POST["action_php"]))
 
     if($_POST["action_php"] == "add_resa") 
     {
-        $sql = "INSERT INTO reservation(nom, adresse, cp, ville, num_traversee_reserve) 
+        $sql = "INSERT INTO reservation(nom, adresse, cp, ville, num_traversee_reserve, id_user) 
                 VALUES ('".$_POST["nom"]."', 
                           '".$_POST["adresse"]."', 
                           '".$_POST["cp"]."', 
                           '".$_POST["ville"]."', 
-                          '".$_POST["hidden_id_resa"]."')";
+                          '".$_POST["hidden_id_resa"]."',
+                          '".$_SESSION["id"]."')";
         
         $stmt = $conn->prepare($sql);
         $stmt->execute();

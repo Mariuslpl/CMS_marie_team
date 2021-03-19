@@ -1820,9 +1820,12 @@ $(document).on('click', '.delete_enregistre', function() {
 
 $(document).ready(function() {
     console.log( "ready!" );
-    document.getElementById("date_traversee").defaultValue = "2000-01-01";
+
+    //document.getElementById("date_traversee").defaultValue = "2000-01-01";
 
     get_btn_resa();
+
+    get_all_trajet();
 });
 
 function get_btn_resa() {
@@ -1903,11 +1906,35 @@ $(document).on('click', '#btn_add_resa', function() {
         },
     }); 
 });
-
-
-
-
 //*************************************************************************************
 //******************************** réservation fin ********************/
 //*************************************************************************************
 
+
+
+//*************************************************************************************
+//******************************** trajet/tarifs début ********************/
+//*************************************************************************************
+function get_all_trajet() {
+    var action = 'get_all_trajet';
+    $.ajax({
+        url:'admin/php_request/trajet_tarif.php',
+        method:'POST',
+        data:{action_php:action},
+        success:function(data) {
+            $('#table_trajet').html(data);
+        },
+        error:function() {
+            console.log("erreur dans l'appel de get_all_liaison.php");
+        }
+    })
+};
+
+$(document).on('click', '.get_tarifs', function() {
+    var action = 'get_one_tarif';
+    var id_liaison = $(this).attr('id');
+    console.log(id_liaison);
+});
+//*************************************************************************************
+//******************************** trajet/tarifs fin ********************/
+//*************************************************************************************

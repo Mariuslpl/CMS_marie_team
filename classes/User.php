@@ -58,6 +58,8 @@
 
          //on verifie le password en retour (hash)
          if ($user = $stmt->fetch()) {
+             $_SESSION["id"] = $user->id;
+             $_SESSION["user_name"] = $user->username;
              return password_verify($password, $user->password);
          }
      } 
@@ -88,6 +90,11 @@
         if ($user = $stmt->fetch()) {
             $_SESSION["id"] = $user->id;
             $_SESSION["user_name"] = $user->username;
+            $_SESSION["nom"] = $user->nom;
+            $_SESSION["prenom"] = $user->prenom;
+            $_SESSION["adresse"] = $user->adresse;
+            $_SESSION["cp"] = $user->cp;
+            $_SESSION["ville"] = $user->ville;
             return password_verify($password, $user->password);
         }
       } 
